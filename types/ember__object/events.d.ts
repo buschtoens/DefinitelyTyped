@@ -11,6 +11,13 @@ export function addListener<Context>(
     once?: boolean
 ): void;
 
+export function addListener<Context>(
+    obj: Context,
+    eventName: string,
+    method: keyof Context | AnyFunction,
+    once?: boolean
+): void;
+
 /**
  * Remove an event listener
  */
@@ -18,6 +25,11 @@ export function removeListener<Context>(
     obj: Context,
     eventName: string,
     target: unknown,
+    method: keyof Context | AnyFunction
+): void;
+export function removeListener<Context>(
+    obj: Context,
+    eventName: string,
     method: keyof Context | AnyFunction
 ): void;
 
