@@ -1,7 +1,11 @@
-import { CompressedPixelFormat, TextureEncoding } from '../../constants';
+import { CompressedPixelFormat, PixelFormat, TextureDataType } from "../../constants.js";
+import { WebGLExtensions } from "./WebGLExtensions.js";
 
 export class WebGLUtils {
-    constructor(gl: WebGLRenderingContext | WebGL2RenderingContext, extensions: any, capabilities: any);
+    constructor(
+        gl: WebGLRenderingContext | WebGL2RenderingContext,
+        extensions: WebGLExtensions,
+    );
 
-    convert(p: CompressedPixelFormat, encoding?: TextureEncoding | null): void;
+    convert(p: PixelFormat | CompressedPixelFormat | TextureDataType, colorSpace?: string): number | null;
 }

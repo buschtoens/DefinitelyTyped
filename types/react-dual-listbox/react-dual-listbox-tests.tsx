@@ -1,29 +1,31 @@
-import * as React from 'react';
-import DualListBox, { Option, ValueOption } from 'react-dual-listbox';
+import * as React from "react";
+import DualListBox, { Option, ValueOption } from "react-dual-listbox";
 
 /** Example options */
 // Flat options
 const flatOptions: Array<ValueOption<string>> = [
-    { label: 'One', value: 'one' }, // ValueOption<string>
-    { label: 'Two', value: 'two' }, // ValueOption<string>
+    { label: "One", value: "one" }, // ValueOption<string>
+    { label: "Two", value: "two" }, // ValueOption<string>
 ];
+const readonlyFlatOptions = flatOptions as ReadonlyArray<ValueOption<string>>;
 
 // Nested options
 const nestedOptions: Array<Option<string>> = [
-    { label: 'Option 1', value: '1' }, // ValueOption<string>
+    { label: "Option 1", value: "1" }, // ValueOption<string>
     {
-        label: 'Category',
+        label: "Category",
         options: [
-            { label: 'Option 2', value: '2' }, // ValueOption<string>
+            { label: "Option 2", value: "2" }, // ValueOption<string>
             {
-                label: 'Nested Category',
+                label: "Nested Category",
                 options: [
-                    { label: 'Option 3', value: '4' }, // ValueOption<string>
+                    { label: "Option 3", value: "4" }, // ValueOption<string>
                 ],
             }, // CategoryOption<string>
         ],
     }, // CategoryOption<string>
 ]; // Option<string>[]
+const readonlyNestedOptions = nestedOptions as ReadonlyArray<Option<string>>;
 
 /** Example change handlers */
 // Simple value change handler.
@@ -33,12 +35,17 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
 
 /** Using flat and nested option structures. */
 <DualListBox options={flatOptions} className="foo" />;
+<DualListBox options={readonlyFlatOptions} className="foo" />;
 <DualListBox options={nestedOptions} />;
+<DualListBox options={readonlyNestedOptions} />;
 
 /** Selection examples. */
 <DualListBox options={flatOptions} onChange={valuesChange} />;
+<DualListBox options={readonlyFlatOptions} onChange={valuesChange} />;
 <DualListBox options={flatOptions} simpleValue onChange={valuesChange} />;
+<DualListBox options={readonlyFlatOptions} simpleValue onChange={valuesChange} />;
 <DualListBox options={flatOptions} simpleValue={false} onChange={optionsChange} />;
+<DualListBox options={readonlyFlatOptions} simpleValue={false} onChange={optionsChange} />;
 
 /** Selection error examples. */
 <DualListBox
@@ -61,6 +68,7 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
 
 /** Filtering examples. */
 <DualListBox options={flatOptions} canFilter={false} />;
+<DualListBox options={readonlyFlatOptions} canFilter={false} />;
 <DualListBox
     options={flatOptions}
     canFilter
@@ -69,23 +77,34 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
         selected: [],
     }}
     onFilterChange={() => {}}
-    filterPlaceholder={''}
+    filterCallback={(option: Option<string>) => true}
+/>;
+<DualListBox
+    options={readonlyFlatOptions}
+    canFilter
+    filter={{
+        available: readonlyFlatOptions.map(o => o.value),
+        selected: [],
+    }}
+    onFilterChange={() => {}}
     filterCallback={(option: Option<string>) => true}
 />;
 
 /** Filtering error examples. */
-// @ts-expect-error You can not use filter properties when `canFilter` is not `true`.
+// @ts-expect-error <7.0
 <DualListBox
     options={flatOptions}
     filter={{
         available: flatOptions.map(o => o.value),
         selected: [],
     }}
+    // @ts-expect-error >=7.0
     onFilterChange={() => {}}
-    filterPlaceholder={''}
+    filterPlaceholder={""}
+    // @ts-expect-error >=7.0
     filterCallback={(option: Option<string>) => true}
 />;
-// @ts-expect-error You can not use filter properties when `canFilter` is not `true`.
+// @ts-expect-error <7.0
 <DualListBox
     options={flatOptions}
     canFilter={false}
@@ -93,8 +112,10 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
         available: flatOptions.map(o => o.value),
         selected: [],
     }}
+    // @ts-expect-error >=7.0
     onFilterChange={() => {}}
-    filterPlaceholder={''}
+    filterPlaceholder={""}
+    // @ts-expect-error >=7.0
     filterCallback={(option: Option<string>) => true}
 />;
 
@@ -102,11 +123,11 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
 <DualListBox
     options={flatOptions}
     available={flatOptions.map(o => o.value)}
-    lang={{ availableHeader: 'Available', selectedHeader: 'Selected' }}
+    lang={{ availableHeader: "Available", selectedHeader: "Selected" }}
 />;
 
 /** Action alignment. */
-<DualListBox options={flatOptions} alignActions={'top'} />;
+<DualListBox options={flatOptions} alignActions={"top"} />;
 
 /** Disabled. */
 <DualListBox options={flatOptions} disabled />;
@@ -114,17 +135,20 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
 /** Preserving select order. */
 <DualListBox options={flatOptions} preserveSelectOrder />;
 
-/** `moveKeyCodes` example. */
-<DualListBox options={flatOptions} moveKeyCodes={[13, 32]} />;
+/** `moveKeys` example. */
+<DualListBox options={flatOptions} moveKeys={[" ", "Enter"]} />;
 
 /** `icons` example. */
 <DualListBox
     options={flatOptions}
     icons={{
-        moveLeft: <span className="fa fa-chevron-left" />,
-        moveAllLeft: [<span key={0} className="fa fa-chevron-left" />, <span key={1} className="fa fa-chevron-left" />],
-        moveRight: <span className="fa fa-chevron-right" />,
-        moveAllRight: [
+        moveToAvailable: <span className="fa fa-chevron-left" />,
+        moveAllToAvailable: [
+            <span key={0} className="fa fa-chevron-left" />,
+            <span key={1} className="fa fa-chevron-left" />,
+        ],
+        moveToSelected: <span className="fa fa-chevron-right" />,
+        moveAllToSelected: [
             <span key={0} className="fa fa-chevron-right" />,
             <span key={1} className="fa fa-chevron-right" />,
         ],
@@ -142,14 +166,17 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
     className="my-special-class"
     options={flatOptions}
     selected={[]}
-    alignActions={'top'}
+    alignActions={"top"}
     allowDuplicates
     available={flatOptions.map(o => o.value)}
     icons={{
-        moveLeft: <span className="fa fa-chevron-left" />,
-        moveAllLeft: [<span key={0} className="fa fa-chevron-left" />, <span key={1} className="fa fa-chevron-left" />],
-        moveRight: <span className="fa fa-chevron-right" />,
-        moveAllRight: [
+        moveToAvailable: <span className="fa fa-chevron-left" />,
+        moveAllToAvailable: [
+            <span key={0} className="fa fa-chevron-left" />,
+            <span key={1} className="fa fa-chevron-left" />,
+        ],
+        moveToSelected: <span className="fa fa-chevron-right" />,
+        moveAllToSelected: [
             <span key={0} className="fa fa-chevron-right" />,
             <span key={1} className="fa fa-chevron-right" />,
         ],
@@ -158,8 +185,8 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
         moveTop: <span className="fa fa-double-angle-up" />,
         moveBottom: <span className="fa fa-double-angle-down" />,
     }}
-    lang={{ availableHeader: 'Available', selectedHeader: 'Selected' }}
-    moveKeyCodes={[13, 32]}
+    lang={{ availableHeader: "Available", selectedHeader: "Selected" }}
+    moveKeys={[" ", "Enter"]}
     simpleValue={false}
     onChange={optionsChange}
     canFilter
@@ -168,11 +195,12 @@ const optionsChange = (selectedValues: Array<Option<string>>) => {};
         selected: [],
     }}
     onFilterChange={() => {}}
-    filterPlaceholder={''}
     filterCallback={(option: Option<string>) => true}
     disabled
     preserveSelectOrder
     showHeaderLabels
     showNoOptionsText
     showOrderButtons
+    getOptionLabel={(option) => option.label}
+    getOptionValue={(option) => option.value}
 />;

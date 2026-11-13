@@ -1,16 +1,9 @@
-// Type definitions for follow-redirects 1.14
-// Project: https://github.com/follow-redirects/follow-redirects
-// Definitions by: Emily Klassen <https://github.com/forivall>
-//                 Claas Ahlrichs <https://github.com/claasahl>
-//                 Piotr Błażejewicz <https://github.com/peterblazejewicz>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
 /// <reference types="node" />
 
-import * as coreHttp from 'http';
-import * as coreHttps from 'https';
-import { URL } from 'url';
-import { Writable } from 'stream';
+import * as coreHttp from "http";
+import * as coreHttps from "https";
+import { Writable } from "stream";
+import { URL } from "url";
 
 export interface WrappableRequest {
     getHeader?(...args: any[]): any;
@@ -36,58 +29,63 @@ export interface Scheme<Options, Request extends WrappableRequest, Response> {
 }
 
 export interface RedirectableRequest<Request extends WrappableRequest, Response> extends Writable {
-    setHeader: Request['setHeader'];
-    removeHeader: Request['removeHeader'];
-    abort: Request['abort'];
-    flushHeaders: Request['flushHeaders'];
-    getHeader: Request['getHeader'];
-    setNoDelay: Request['setNoDelay'];
-    setSocketKeepAlive: Request['setSocketKeepAlive'];
-    setTimeout: Request['setTimeout'];
+    setHeader: Request["setHeader"];
+    removeHeader: Request["removeHeader"];
+    abort: Request["abort"];
+    flushHeaders: Request["flushHeaders"];
+    getHeader: Request["getHeader"];
+    setNoDelay: Request["setNoDelay"];
+    setSocketKeepAlive: Request["setSocketKeepAlive"];
+    setTimeout: Request["setTimeout"];
 
     addListener(event: string, listener: (...args: any[]) => void): this;
-    addListener(event: 'response', listener: (response: Response) => void): this;
-    addListener(event: 'error', listener: (err: Error) => void): this;
+    addListener(event: "response", listener: (response: Response) => void): this;
+    addListener(event: "error", listener: (err: Error) => void): this;
 
     emit(event: string | symbol, ...args: any[]): boolean;
-    emit(event: 'response', response: Response): boolean;
-    emit(event: 'error', err: Error): boolean;
+    emit(event: "response", response: Response): boolean;
+    emit(event: "error", err: Error): boolean;
 
     on(event: string, listener: (...args: any[]) => void): this;
-    on(event: 'response', listener: (response: Response) => void): this;
-    on(event: 'error', listener: (err: Error) => void): this;
+    on(event: "response", listener: (response: Response) => void): this;
+    on(event: "error", listener: (err: Error) => void): this;
 
     once(event: string, listener: (...args: any[]) => void): this;
-    once(event: 'response', listener: (response: Response) => void): this;
-    once(event: 'error', listener: (err: Error) => void): this;
+    once(event: "response", listener: (response: Response) => void): this;
+    once(event: "error", listener: (err: Error) => void): this;
 
     prependListener(event: string, listener: (...args: any[]) => void): this;
-    prependListener(event: 'response', listener: (response: Response) => void): this;
-    prependListener(event: 'error', listener: (err: Error) => void): this;
+    prependListener(event: "response", listener: (response: Response) => void): this;
+    prependListener(event: "error", listener: (err: Error) => void): this;
 
     prependOnceListener(event: string, listener: (...args: any[]) => void): this;
-    prependOnceListener(event: 'response', listener: (response: Response) => void): this;
-    prependOnceListener(event: 'error', listener: (err: Error) => void): this;
+    prependOnceListener(event: "response", listener: (response: Response) => void): this;
+    prependOnceListener(event: "error", listener: (err: Error) => void): this;
 }
 
 export interface RedirectScheme<Options, Request extends WrappableRequest, Response> {
+    /**
+     * This function has two overloads:
+     * ```typescript
+     * request(options: string | URL | Options, callback)
+     * request(url: string | URL, options: Options, callback)
+     * ```
+     */
     request(
-        options: string | URL | (Options & FollowOptions<Options>),
+        url: string | URL | (Options & FollowOptions<Options>),
+        options?: (Options & FollowOptions<Options>) | ((res: Response & FollowResponse) => void),
         callback?: (res: Response & FollowResponse) => void,
     ): RedirectableRequest<Request, Response>;
-    request(
-        url: string | URL,
-        options: Options & FollowOptions<Options>,
-        callback?: (res: Response & FollowResponse) => void,
-    ): RedirectableRequest<Request, Response>;
-
+    /**
+     * This function has two overloads:
+     * ```typescript
+     * get(options: string | URL | Options, callback)
+     * get(url: string | URL, options: Options, callback)
+     * ```
+     */
     get(
-        options: string | URL | (Options & FollowOptions<Options>),
-        callback?: (res: Response & FollowResponse) => void,
-    ): RedirectableRequest<Request, Response>;
-    get(
-        url: string | URL,
-        options: Options & FollowOptions<Options>,
+        url: string | URL | (Options & FollowOptions<Options>),
+        options?: (Options & FollowOptions<Options>) | ((res: Response & FollowResponse) => void),
         callback?: (res: Response & FollowResponse) => void,
     ): RedirectableRequest<Request, Response>;
 }
@@ -102,9 +100,9 @@ export interface FollowOptions<Options> {
         | undefined;
     agents?:
         | {
-              http?: coreHttp.Agent | undefined;
-              https?: coreHttps.Agent | undefined;
-          }
+            http?: coreHttp.Agent | undefined;
+            https?: coreHttps.Agent | undefined;
+        }
         | undefined;
     trackRedirects?: boolean | undefined;
 }

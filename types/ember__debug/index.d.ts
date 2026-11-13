@@ -1,11 +1,3 @@
-// Type definitions for non-npm package @ember/debug 4.0
-// Project: https://emberjs.com/api/ember/4.0/modules/@ember%2Fdebug
-// Definitions by: Chris Krycho <https://github.com/chriskrycho>
-//                 Dan Freeman <https://github.com/dfreeman>
-//                 James C. Davis <https://github.com/jamescdavis>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// Minimum TypeScript Version: 4.4
-
 /**
  * Define an assertion that will throw an exception if the condition is not met.
  */
@@ -23,14 +15,26 @@ export function debug(message: string): void;
  * The following example demonstrates its usage by registering a handler that throws an error if the
  * message contains the word "should", otherwise defers to the default handler.
  */
-export function registerDeprecationHandler(handler: (message: string, options: { id: string, until: string }, next: () => void) => void): void;
+export function registerDeprecationHandler(
+    handler: (
+        message: string,
+        options: { id: string; until: string } | undefined,
+        next: (message: string, options?: { id: string; until: string }) => void,
+    ) => void,
+): void;
 /**
  * Allows for runtime registration of handler functions that override the default warning behavior.
  * Warnings are invoked by calls made to [Ember.warn](http://emberjs.com/api/classes/Ember.html#method_warn).
  * The following example demonstrates its usage by registering a handler that does nothing overriding Ember's
  * default warning behavior.
  */
-export function registerWarnHandler(handler: (message: string, options: { id: string }, next: (message?: string, options?: { id: string }) => void) => void): void;
+export function registerWarnHandler(
+    handler: (
+        message: string,
+        options: { id: string } | undefined,
+        next: (message: string, options?: { id: string }) => void,
+    ) => void,
+): void;
 
 /**
  * Run a function meant for debugging.
@@ -84,5 +88,9 @@ export function deprecate(
     },
 ): void;
 
-export interface Available { available: string; }
-export interface Enabled extends Available { enabled: string; }
+export interface Available {
+    available: string;
+}
+export interface Enabled extends Available {
+    enabled: string;
+}

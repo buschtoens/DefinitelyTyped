@@ -1,4 +1,4 @@
-import { Buf } from './buf';
+import { Buf } from "./buf";
 
 export namespace Config {
     const enum LEVEL {
@@ -7,7 +7,7 @@ export namespace Config {
         GLOBAL = 3,
         LOCAL = 4,
         APP = 5,
-        HIGHEST_LEVEL = -1
+        HIGHEST_LEVEL = -1,
     }
 
     const enum MAP {

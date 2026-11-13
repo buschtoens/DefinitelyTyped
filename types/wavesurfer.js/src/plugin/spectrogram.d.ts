@@ -51,7 +51,7 @@ export interface SpectrogramPluginParams extends PluginParams {
     /** Controls the size of the spectrogram in relation with its canvas (1 = Draw on the whole canvas. 2 = Draw on a quarter, i.e. 1/2 the length and 1/2 the width). */
     pixelRatio?: number | undefined;
     /** A 256 long array of 4-element arrays. Each entry should contain a float between 0 and 1 and specify r, g, b, and alpha. */
-    colorMap?: RGBA[] & { length: 256 } | undefined;
+    colorMap?: (RGBA[] & { length: 256 }) | undefined;
 }
 
 export type RGBA = [number, number, number, number];
